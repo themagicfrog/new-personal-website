@@ -1,27 +1,67 @@
 ---
 ---
 
+<!-- Background image source: https://www.deviantart.com/djoulo/art/Ghibli-style-painting-872190294 -->
+
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=DynaPuff&family=Dekko&display=swap" rel="stylesheet" />
 		<title>Estella Gu</title>
 	</head>
 	<body>
 		<main>
-			<h1>estella gu</h1>
+			<div class="box">
+				<h1>estella gu</h1>
+				<p>hello! i'm a high school programmer, artist, writer, and photographer.</p>
+				
+				<div class="nav-buttons">
+					<button class="nav-button">projects</button>
+					<button class="nav-button">art</button>
+					<button class="nav-button">photography</button>
+					<button class="nav-button">adventures</button>
+					<button class="nav-button">writing</button>
+				</div>
+				
+				<div class="social-links">
+					<a href="https://github.com/themagicfrog" target="_blank" rel="noopener noreferrer">github</a>
+					<a href="https://www.linkedin.com/in/estellagu/" target="_blank" rel="noopener noreferrer">linkedin</a>
+					<a href="https://www.instagram.com/estella.gu_/" target="_blank" rel="noopener noreferrer">instagram</a>
+					<a href="https://scrapbook.hackclub.com/magicfrog" target="_blank" rel="noopener noreferrer">hack club</a>
+				</div>
+			</div>
 		</main>
 	</body>
 </html>
 
 <style>
+	:root {
+		--text-color: #000000;
+
+		--h1-size: 4rem;
+		--p-size: 1.8rem;
+		--social-size: 1.5rem;
+		--button-size: 1.5rem;
+
+		--main-padding: 70px;
+		--box-padding: 3rem;
+		--box-width: 70%;
+		--box-radius: 15px;
+
+		--social-gap: 1.5rem;
+		--button-gap: 1.5rem;
+		--social-margin-top: 2rem;
+		--button-margin-top: 2rem;
+	}
+
 	html, body {
 		margin: 0;
 		padding: 0;
-		width: 100%;
-		height: 100%;
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 	}
 
@@ -30,9 +70,129 @@
 		align-items: center;
 		justify-content: center;
 		min-height: 100vh;
+		/* background image from: https://www.deviantart.com/djoulo/art/Ghibli-style-painting-872190294 */
+		background-image: url('/background.jpg');
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
 	}
 
 	main {
-		text-align: center;
+		width: 100%;
+		height: 100vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: var(--main-padding);
+		box-sizing: border-box;
+	}
+
+	.box {
+		border-radius: var(--box-radius);
+		padding: var(--box-padding);
+		width: var(--box-width);
+		height: 100%;
+		background-color: white;
+		box-sizing: border-box;
+	}
+
+	h1 {
+		font-family: 'DynaPuff', sans-serif;
+		font-size: var(--h1-size);
+		margin: 0;
+		color: var(--text-color);
+	}
+
+	p {
+		font-family: 'Dekko', sans-serif;
+		margin-top: 1rem;
+		margin-bottom: 0;
+		font-size: var(--p-size);
+		color: var(--text-color);
+	}
+
+	.nav-buttons {
+		margin-top: var(--button-margin-top);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--button-gap);
+	}
+
+	.nav-button {
+		font-family: 'Dekko', sans-serif;
+		font-size: var(--button-size);
+		color: var(--text-color);
+		background: none;
+		border: none;
+		padding: 0;
+		cursor: pointer;
+		text-decoration: none;
+		transition: opacity 0.2s;
+	}
+
+	.nav-button:hover {
+		opacity: 0.7;
+	}
+
+	.social-links {
+		margin-top: var(--social-margin-top);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--social-gap);
+	}
+
+	.social-links a {
+		font-family: 'Dekko', sans-serif;
+		font-size: var(--social-size);
+		color: var(--text-color);
+		text-decoration: none;
+		transition: opacity 0.2s;
+	}
+
+	.social-links a:hover {
+		opacity: 0.7;
+	}
+
+	@media (max-width: 1024px) {
+		:root {
+			--main-padding: 40px;
+			--box-width: 85%;
+			--h1-size: 3rem;
+			--p-size: 1.5rem;
+			--social-size: 1.3rem;
+			--button-size: 1.3rem;
+		}
+	}
+
+	@media (max-width: 768px) {
+		:root {
+			--main-padding: 20px;
+			--box-width: 100%;
+			--box-padding: 2rem;
+			--box-radius: 10px;
+			--h1-size: 2.5rem;
+			--p-size: 1.25rem;
+			--social-size: 1.1rem;
+			--social-gap: 1rem;
+			--social-margin-top: 1.5rem;
+			--button-size: 1.1rem;
+			--button-gap: 1rem;
+			--button-margin-top: 1.5rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		:root {
+			--main-padding: 15px;
+			--box-padding: 1.5rem;
+			--h1-size: 2rem;
+			--p-size: 1.1rem;
+			--social-size: 1rem;
+			--social-gap: 0.75rem;
+			--social-margin-top: 1.25rem;
+			--button-size: 1rem;
+			--button-gap: 0.75rem;
+			--button-margin-top: 1.25rem;
+		}
 	}
 </style>
