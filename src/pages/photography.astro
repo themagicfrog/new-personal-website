@@ -1,0 +1,136 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import CloudBanner from '../components/CloudBanner.astro';
+import { supabase, type Photo } from '../lib/supabase';
+
+let photos: Photo[] = [];
+let collections: string[] = [];
+
+try {
+	const { data, error } = await supabase
+		.from('photos')
+		.select('*')
+		.order('date', { ascending: false });
+
+	if (error) {
+		console.error('Error fetching photos:', error);
+	} else {
+		photos = data || [];
+		collections = [...new Set(photos.map((photo: Photo) => photo.collection))].sort();
+	}
+} catch (err) {
+	console.error('Failed to fetch photos:', err);
+}
+---
+
+<PageLayout title="Photography - Estella Gu">
+	<Breadcrumb items={[
+		{ text: 'home', href: '/' },
+		{ text: 'photography' }
+	]} />
+	<CloudBanner />
+	<div class="box-content photography-page">
+		<h1>photography</h1>
+		{collections.length === 0 ? (
+			<p>no collections yet</p>
+		) : (
+			<div class="collections-grid">
+				{collections.map((collection) => {
+					const collectionPhotos = photos.filter((p: Photo) => p.collection === collection);
+					const coverPhoto = collectionPhotos[0];
+					const slug = collection.toLowerCase().replace(/\s+/g, '-');
+					return (
+						<a href={`/photography/${slug}`} class="collection-card">
+							{coverPhoto && (
+								<img src={coverPhoto.image_url} alt={collection} class="collection-cover" loading="eager" />
+							)}
+							<div class="collection-overlay">
+								<h2>{collection}</h2>
+								<p class="collection-count">{collectionPhotos.length} photo{collectionPhotos.length !== 1 ? 's' : ''}</p>
+							</div>
+						</a>
+					);
+				})}
+			</div>
+		)}
+	</div>
+</PageLayout>
+
+<style>
+	.photography-page {
+		flex-direction: column;
+	}
+
+	.photography-page h1 {
+		margin-bottom: 0;
+	}
+
+	.collections-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 2rem;
+		margin-top: 0.1rem;
+	}
+
+	.collection-card {
+		position: relative;
+		border: none;
+		border-radius: 3px;
+		overflow: hidden;
+		background: #f0f0f0;
+		aspect-ratio: 4 / 3;
+		transition: transform 0.2s, opacity 0.2s;
+		display: block;
+		text-decoration: none;
+	}
+
+	.collection-card:hover {
+		transform: scale(1.02);
+		opacity: 0.9;
+	}
+
+	.collection-cover {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: 0;
+	}
+
+	.collection-overlay {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+		padding: 1.5rem;
+		color: white;
+		z-index: 1;
+	}
+
+	.collection-overlay h2 {
+		font-family: 'DynaPuff', sans-serif;
+		font-size: 1.8rem;
+		margin: 0 0 0.5rem 0;
+		color: white;
+	}
+
+	.collection-count {
+		font-family: 'Dekko', sans-serif;
+		font-size: 1rem;
+		margin: 0;
+		color: rgba(255, 255, 255, 0.9);
+	}
+
+
+	@media (max-width: 768px) {
+		.collections-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+

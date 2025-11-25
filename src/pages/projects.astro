@@ -31,69 +31,73 @@ try {
 		{ text: 'projects' }
 	]} />
 	<CloudBanner />
-	<div class="box-content">
-		<div class="left-column">
-			<h1>projects</h1>
-			{projects.length === 0 ? (
-				<p>no projects</p>
-			) : (
-				<div class="projects-list">
-					{projects.map((project) => (
-						<article class="project-card">
-							<div class="project-header">
-								<h2>{project.title}</h2>
-								{project.date && (
-									<time class="project-date">{new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+	<div class="box-content projects-page">
+		<h1>projects</h1>
+		{projects.length === 0 ? (
+			<p>no projects</p>
+		) : (
+			<div class="projects-list">
+				{projects.map((project) => (
+					<article class="project-card">
+						<div class="project-header">
+							<h2>{project.title}</h2>
+							{project.date && (
+								<time class="project-date">{new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+							)}
+						</div>
+						<p class="project-one-liner">{project.one_liner}</p>
+						{project.images && project.images.length > 0 && (
+							<div class="project-images-carousel">
+								{project.images.map((image: string, index: number) => (
+									<img 
+										src={image} 
+										alt={`${project.title} - Image ${index + 1}`} 
+										loading="lazy"
+										class={index === 0 ? 'active' : ''}
+									/>
+								))}
+								{project.images.length > 1 && (
+									<div class="carousel-indicators">
+										{project.images.map((_, index: number) => (
+											<span class={`indicator ${index === 0 ? 'active' : ''}`}></span>
+										))}
+									</div>
 								)}
 							</div>
-							<p class="project-one-liner">{project.one_liner}</p>
-							{project.images && project.images.length > 0 && (
-								<div class="project-images-carousel" data-image-count={project.images.length}>
-									{project.images.map((image: string, index: number) => (
-										<img 
-											src={image} 
-											alt={`${project.title} - Image ${index + 1}`} 
-											loading="lazy"
-											class={index === 0 ? 'active' : ''}
-											data-index={index}
-										/>
-									))}
-									{project.images.length > 1 && (
-										<div class="carousel-indicators">
-											{project.images.map((_, index: number) => (
-												<span class={`indicator ${index === 0 ? 'active' : ''}`} data-index={index}></span>
-											))}
-										</div>
-									)}
-								</div>
-							)}
-							<p class="project-description">{project.description}</p>
-							{project.link && (
-								<a href={project.link} target="_blank" rel="noopener noreferrer" class="project-link">
-									view more →
-								</a>
-							)}
-						</article>
-					))}
-				</div>
-			)}
-		</div>
-		<div class="right-column"></div>
+						)}
+						<p class="project-description">{project.description}</p>
+						{project.link && (
+							<a href={project.link} target="_blank" rel="noopener noreferrer" class="project-link">
+								view more →
+							</a>
+						)}
+					</article>
+				))}
+			</div>
+		)}
 	</div>
 </PageLayout>
 
 <style>
-	.projects-list {
-		display: flex;
+	.projects-page {
 		flex-direction: column;
-		gap: 3rem;
-		margin-top: 2rem;
+	}
+
+	.projects-page h1 {
+		margin-bottom: 1rem;
+	}
+
+	.projects-list {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 2rem;
+		margin-top: 0.2rem;
 	}
 
 	.project-card {
 		border: 2px solid var(--text-color);
 		border-radius: 10px;
-		padding: 2rem;
+		padding: 2.5rem;
 		background-color: #fafafa;
 	}
 
@@ -182,7 +186,7 @@ try {
 
 	.project-description {
 		font-family: 'Dekko', sans-serif;
-		font-size: var(--p-size);
+		font-size: 1.1rem;
 		line-height: 1.6;
 		margin: 1rem 0;
 		color: var(--text-color);
@@ -203,16 +207,20 @@ try {
 	}
 
 	@media (max-width: 768px) {
+		.projects-list {
+			grid-template-columns: 1fr;
+		}
+
 		.project-card {
 			padding: 1.5rem;
 		}
 
 		.project-card h2 {
-			font-size: 1.5rem;
+			font-size: 1.4rem;
 		}
 
 		.project-one-liner {
-			font-size: 1.1rem;
+			font-size: 1rem;
 		}
 
 		.project-images-carousel {
@@ -235,12 +243,8 @@ try {
 			if (imageCount <= 1) return;
 
 			const showImage = (index: number) => {
-				images.forEach((img, i) => {
-					img.classList.toggle('active', i === index);
-				});
-				indicators.forEach((indicator, i) => {
-					indicator.classList.toggle('active', i === index);
-				});
+				images.forEach((img, i) => img.classList.toggle('active', i === index));
+				indicators.forEach((indicator, i) => indicator.classList.toggle('active', i === index));
 			};
 
 			const nextImage = () => {

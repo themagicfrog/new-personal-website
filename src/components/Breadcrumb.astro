@@ -7,18 +7,12 @@ const { items } = Astro.props;
 ---
 
 <nav class="breadcrumb">
-	{items.map((item, index) => {
-		const element = item.href 
-			? <a href={item.href}>{item.text}</a>
-			: <span>{item.text}</span>;
-		
-		return (
-			<>
-				{element}
-				{index < items.length - 1 && <span> -> </span>}
-			</>
-		);
-	})}
+	{items.map((item, index) => (
+		<>
+			{item.href ? <a href={item.href}>{item.text}</a> : <span>{item.text}</span>}
+			{index < items.length - 1 && <span> -> </span>}
+		</>
+	))}
 </nav>
 
 <style is:global>

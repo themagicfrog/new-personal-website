@@ -1,0 +1,117 @@
+---
+export const prerender = false;
+
+import PageLayout from '../../layouts/PageLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import CloudBanner from '../../components/CloudBanner.astro';
+import { supabase, type Photo } from '../../lib/supabase';
+
+const { collection: collectionSlug } = Astro.params;
+
+if (!collectionSlug) {
+	return Astro.redirect('/photography');
+}
+
+let photos: Photo[] = [];
+let collectionName = '';
+
+try {
+	const { data, error } = await supabase
+		.from('photos')
+		.select('*')
+		.order('date', { ascending: false });
+
+	if (error) {
+		console.error('Error fetching photos:', error);
+		return Astro.redirect('/photography');
+	}
+
+	photos = data || [];
+	const allCollections = [...new Set(photos.map((p: Photo) => p.collection))];
+	const matchingCollection = allCollections.find(
+		(c) => c.toLowerCase().replace(/\s+/g, '-') === collectionSlug
+	);
+
+	if (!matchingCollection) {
+		return Astro.redirect('/photography');
+	}
+
+	collectionName = matchingCollection;
+	photos = photos.filter((p: Photo) => p.collection === collectionName);
+} catch (err) {
+	console.error('Failed to fetch photos:', err);
+	return Astro.redirect('/photography');
+}
+---
+
+<PageLayout title={`${collectionName} - Photography - Estella Gu`}>
+	<Breadcrumb items={[
+		{ text: 'home', href: '/' },
+		{ text: 'photography', href: '/photography' },
+		{ text: collectionName }
+	]} />
+	<CloudBanner />
+	<div class="box-content photography-page">
+		<h1>{collectionName}</h1>
+		{photos.length === 0 ? (
+			<p>no photos in this collection</p>
+		) : (
+			<div class="gallery-grid">
+				{photos.map((photo: Photo) => (
+					<div class="gallery-item">
+						<img 
+							src={photo.image_url} 
+							alt={collectionName}
+							loading="lazy"
+						/>
+					</div>
+				))}
+			</div>
+		)}
+	</div>
+</PageLayout>
+
+<style>
+	.photography-page {
+		flex-direction: column;
+	}
+
+	.photography-page h1 {
+		margin-bottom: 0;
+	}
+
+	.gallery-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		gap: 1.5rem;
+		margin-top: 0.1rem;
+	}
+
+	.gallery-item {
+		position: relative;
+		border: none;
+		border-radius: 3px;
+		overflow: hidden;
+		aspect-ratio: 1;
+		transition: transform 0.2s;
+	}
+
+	.gallery-item:hover {
+		transform: scale(1.05);
+	}
+
+	.gallery-item img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	@media (max-width: 768px) {
+		.gallery-grid {
+			grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+			gap: 1rem;
+		}
+	}
+</style>
+

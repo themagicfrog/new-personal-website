@@ -13,13 +13,54 @@ import CloudBanner from '../components/CloudBanner.astro';
 			<p>hello! i'm a high school programmer, artist, writer, and photographer.</p>
 			<div class="nav-buttons">
 				<a href="/projects" class="nav-button">projects</a>
-				<button class="nav-button">art</button>
-				<button class="nav-button">photography</button>
 				<button class="nav-button">adventures</button>
+				<a href="/photography" class="nav-button">photography</a>
 				<button class="nav-button">writing</button>
+				<button class="nav-button">art</button>
 				<a href="/find-me" class="nav-button">find me</a>
 			</div>
 		</div>
 		<div class="right-column"></div>
 	</div>
 </PageLayout>
+
+<style>
+	.nav-buttons {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+		margin-top: var(--button-margin-top);
+	}
+
+	.nav-button {
+		font-family: 'Dekko', sans-serif;
+		font-size: var(--button-size);
+		color: white;
+		background-color: #eb6e6e;
+		border: none;
+		border-radius: 8px;
+		padding: 1rem;
+		cursor: pointer;
+		text-decoration: none;
+		text-align: center;
+		transition: background-color 0.2s, transform 0.2s;
+		display: block;
+	}
+
+	.nav-button:hover {
+		background-color: #cb3535;
+		transform: translateY(-2px);
+	}
+
+	@media (max-width: 768px) {
+		.nav-buttons {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 480px) {
+		.nav-buttons {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

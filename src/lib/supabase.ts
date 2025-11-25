@@ -19,3 +19,11 @@ export interface Project {
 	date: string;
 	created_at: string;
 }
+
+export interface Photo {
+	id: string;
+	image_url: string;
+	collection: string;
+	date: string;
+	created_at: string;
+}
