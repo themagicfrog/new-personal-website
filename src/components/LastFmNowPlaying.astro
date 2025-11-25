@@ -1,0 +1,71 @@
+---
+interface LastFmTrack {
+	name: string;
+	artist: { '#text': string };
+	album?: { '#text': string };
+	image: Array<{ '#text': string; size: string }>;
+	url: string;
+	'@attr'?: { nowplaying: string };
+}
+
+interface LastFmResponse {
+	recenttracks: {
+		track: LastFmTrack | LastFmTrack[];
+		'@attr': { user: string; total: string; page: string; perPage: string; totalPages: string };
+	};
+}
+
+let currentTrack: LastFmTrack | null = null;
+let isPlaying = false;
+
+try {
+	const apiKey = import.meta.env.PUBLIC_LASTFM_API_KEY;
+	const username = import.meta.env.PUBLIC_LASTFM_USERNAME;
+
+	if (apiKey && username) {
+		const response = await fetch(
+			`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${username}&api_key=${apiKey}&format=json&limit=1`
+		);
+
+		if (response.ok) {
+			const data: LastFmResponse = await response.json();
+			const tracks = Array.isArray(data.recenttracks.track) 
+				? data.recenttracks.track 
+				: [data.recenttracks.track];
+			
+			if (tracks.length > 0) {
+				const track = tracks[0];
+				const nowPlaying = track['@attr']?.nowplaying === 'true';
+				
+				if (nowPlaying) {
+					currentTrack = track;
+					isPlaying = true;
+				}
+			}
+		}
+	}
+} catch (err) {
+	console.error('Failed to fetch Last.fm data:', err);
+}
+---
+
+{isPlaying && currentTrack && (
+	<p class="lastfm-text">
+		currently listening to <strong>{currentTrack.name}</strong> by <strong>{currentTrack.artist['#text']}</strong>
+	</p>
+)}
+
+<style>
+	.lastfm-text {
+		font-family: 'Dekko', sans-serif;
+		font-size: 1.2rem;
+		margin-top: 1.5rem;
+		margin-bottom: 0;
+		color: var(--text-color);
+	}
+
+	.lastfm-text strong {
+		font-weight: 600;
+	}
+</style>
+

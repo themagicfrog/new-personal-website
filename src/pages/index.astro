@@ -2,7 +2,7 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import CloudBanner from '../components/CloudBanner.astro';
-import SpotifyNowPlaying from '../components/SpotifyNowPlaying.astro';
+import LastFmNowPlaying from '../components/LastFmNowPlaying.astro';
 ---
 
 <PageLayout title="Estella Gu">
@@ -20,10 +20,10 @@ import SpotifyNowPlaying from '../components/SpotifyNowPlaying.astro';
 				<button class="nav-button">art</button>
 				<a href="/find-me" class="nav-button">find me</a>
 			</div>
+			<LastFmNowPlaying />
 		</div>
 		<div class="right-column">
 			<img src="/estella.jpg" alt="Estella Gu" class="profile-image" />
-			<SpotifyNowPlaying />
 		</div>
 	</div>
 </PageLayout>
