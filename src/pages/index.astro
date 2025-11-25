@@ -2,6 +2,7 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import CloudBanner from '../components/CloudBanner.astro';
+import SpotifyNowPlaying from '../components/SpotifyNowPlaying.astro';
 ---
 
 <PageLayout title="Estella Gu">
@@ -20,7 +21,10 @@ import CloudBanner from '../components/CloudBanner.astro';
 				<a href="/find-me" class="nav-button">find me</a>
 			</div>
 		</div>
-		<div class="right-column"></div>
+		<div class="right-column">
+			<img src="/estella.jpg" alt="Estella Gu" class="profile-image" />
+			<SpotifyNowPlaying />
+		</div>
 	</div>
 </PageLayout>
 
@@ -61,6 +65,29 @@ import CloudBanner from '../components/CloudBanner.astro';
 	@media (max-width: 480px) {
 		.nav-buttons {
 			grid-template-columns: 1fr;
+		}
+	}
+
+	.profile-image {
+		width: 100%;
+		max-width: 300px;
+		aspect-ratio: 1;
+		border-radius: 50%;
+		object-fit: cover;
+		display: block;
+		margin: 0 auto;
+		transition: transform 0.3s ease;
+		cursor: pointer;
+	}
+
+	.profile-image:hover {
+		transform: scale(1.1);
+	}
+
+	@media (max-width: 768px) {
+		.profile-image {
+			max-width: 200px;
+			margin-top: 2rem;
 		}
 	}
 </style>
