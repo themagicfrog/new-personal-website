@@ -1,0 +1,203 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=DynaPuff&family=Dekko&display=swap" rel="stylesheet" />
+		<title>{title}</title>
+	</head>
+	<body>
+		<main>
+			<div class="box">
+				<slot />
+			</div>
+		</main>
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--text-color: #000000;
+		--h1-size: 4rem;
+		--p-size: 1.8rem;
+		--button-size: 1.5rem;
+		--main-padding: 70px;
+		--box-padding: 3rem;
+		--box-width: 85%;
+		--box-radius: 15px;
+		--button-gap: 1.5rem;
+		--button-margin-top: 2rem;
+	}
+
+	html, body {
+		margin: 0;
+		padding: 0;
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+	}
+
+	body {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 100vh;
+		background-image: url('/background.jpg');
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	main {
+		width: 100%;
+		min-height: 100vh;
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		padding: var(--main-padding);
+		box-sizing: border-box;
+	}
+
+	.box {
+		border-radius: var(--box-radius);
+		padding: var(--box-padding);
+		padding-top: calc(var(--box-padding) + 80px);
+		width: var(--box-width);
+		min-height: calc(100vh - calc(var(--main-padding) * 2));
+		max-height: calc(100vh - calc(var(--main-padding) * 2));
+		background-color: white;
+		box-sizing: border-box;
+		position: relative;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	.box-content {
+		display: flex;
+		width: 100%;
+		gap: 2rem;
+	}
+
+	.left-column {
+		flex: 1;
+	}
+
+	.right-column {
+		flex: 1;
+	}
+
+	h1 {
+		font-family: 'DynaPuff', sans-serif;
+		font-size: var(--h1-size);
+		margin: 0;
+		color: var(--text-color);
+	}
+
+	p {
+		font-family: 'Dekko', sans-serif;
+		margin-top: 1rem;
+		margin-bottom: 0;
+		font-size: var(--p-size);
+		color: var(--text-color);
+	}
+
+	p a {
+		font-family: 'Dekko', sans-serif;
+		font-size: var(--p-size);
+		color: var(--text-color);
+		text-decoration: none;
+		transition: opacity 0.2s;
+	}
+
+	p a:hover {
+		opacity: 0.7;
+	}
+
+	.nav-buttons {
+		margin-top: var(--button-margin-top);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--button-gap);
+	}
+
+	.nav-button {
+		font-family: 'Dekko', sans-serif;
+		font-size: var(--button-size);
+		color: var(--text-color);
+		background: none;
+		border: none;
+		padding: 0;
+		cursor: pointer;
+		text-decoration: none;
+		transition: opacity 0.2s;
+	}
+
+	.nav-button:hover {
+		opacity: 0.7;
+	}
+
+	@media (max-width: 1024px) {
+		:root {
+			--main-padding: 40px;
+			--box-width: 85%;
+			--h1-size: 3rem;
+			--p-size: 1.5rem;
+			--button-size: 1.3rem;
+		}
+	}
+
+	@media (max-width: 768px) {
+		:root {
+			--main-padding: 20px;
+			--box-width: 100%;
+			--box-padding: 2rem;
+			--box-radius: 10px;
+			--h1-size: 2.5rem;
+			--p-size: 1.25rem;
+			--button-size: 1.1rem;
+			--button-gap: 1rem;
+			--button-margin-top: 1.5rem;
+		}
+
+		.box {
+			padding-top: calc(var(--box-padding) + 90px);
+		}
+
+		.box-content {
+			flex-direction: column;
+			gap: 1rem;
+		}
+
+		.left-column,
+		.right-column {
+			width: 100%;
+		}
+	}
+
+	@media (max-width: 480px) {
+		:root {
+			--main-padding: 15px;
+			--box-padding: 1.5rem;
+			--h1-size: 2rem;
+			--p-size: 1.1rem;
+			--button-size: 1rem;
+			--button-gap: 0.75rem;
+			--button-margin-top: 1.25rem;
+		}
+
+		.box {
+			padding-top: calc(var(--box-padding) + 120px);
+		}
+	}
+</style>
+

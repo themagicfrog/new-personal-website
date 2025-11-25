@@ -1,0 +1,70 @@
+---
+const cloudEmoji = '☁️';
+const cloudCount = 40;
+const clouds = Array(cloudCount).fill(cloudEmoji);
+---
+
+<div class="cloud-banner">
+	<div class="cloud-scroll">
+		{clouds.map((cloud) => (
+			<span>{cloud}</span>
+		))}
+	</div>
+	<div class="cloud-scroll" aria-hidden="true">
+		{clouds.map((cloud) => (
+			<span>{cloud}</span>
+		))}
+	</div>
+</div>
+
+<style is:global>
+	.cloud-banner {
+		position: absolute;
+		top: 70px;
+		left: 0;
+		right: 0;
+		height: 60px;
+		overflow: hidden;
+		display: flex;
+		white-space: nowrap;
+	}
+
+	.cloud-scroll {
+		display: inline-flex;
+		animation: slide-clouds 21s linear infinite;
+		font-size: 2rem;
+		align-items: center;
+	}
+
+	.cloud-scroll span {
+		display: inline-block;
+		flex-shrink: 0;
+		margin-right: 2rem;
+	}
+
+	@keyframes slide-clouds {
+		0% { transform: translateX(-50%); }
+		100% { transform: translateX(0); }
+	}
+
+	@media (max-width: 768px) {
+		.cloud-banner {
+			top: 60px;
+			height: 50px;
+		}
+		.cloud-scroll {
+			font-size: 1.5rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.cloud-banner {
+			top: 50px;
+			height: 40px;
+		}
+		.cloud-scroll {
+			font-size: 1.25rem;
+		}
+	}
+</style>
+

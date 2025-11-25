@@ -1,6 +1,21 @@
-export const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
-export const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
+import { createClient } from '@supabase/supabase-js';
 
-// import { createClient } from '@supabase/supabase-js';
-// export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 
+if (!supabaseUrl || !supabaseAnonKey) {
+	console.warn('Supabase URL and Anon Key must be set in environment variables');
+}
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+export interface Project {
+	id: string;
+	title: string;
+	one_liner: string;
+	description: string;
+	images: string[] | null;
+	link: string | null;
+	date: string;
+	created_at: string;
+}
