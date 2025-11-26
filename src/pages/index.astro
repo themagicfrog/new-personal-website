@@ -2,7 +2,7 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import CloudBanner from '../components/CloudBanner.astro';
-import LastFmNowPlaying from '../components/LastFmNowPlaying.astro';
+// import LastFmNowPlaying from '../components/LastFmNowPlaying.astro';
 ---
 
 <PageLayout title="Estella Gu">
@@ -14,13 +14,13 @@ import LastFmNowPlaying from '../components/LastFmNowPlaying.astro';
 			<p>hello! i'm a high school programmer, artist, writer, and photographer.</p>
 			<div class="nav-buttons">
 				<a href="/projects" class="nav-button">projects</a>
-				<button class="nav-button">adventures</button>
+				<a href="/adventures" class="nav-button">adventures</a>
 				<a href="/photography" class="nav-button">photography</a>
-				<button class="nav-button">writing</button>
-				<button class="nav-button">art</button>
+				<a href="/writing" class="nav-button">writing</a>
+				<a href="/art" class="nav-button">art</a>
 				<a href="/find-me" class="nav-button">find me</a>
 			</div>
-			<LastFmNowPlaying />
+			{/* <LastFmNowPlaying /> */}
 		</div>
 		<div class="right-column">
 			<img src="/estella.jpg" alt="Estella Gu" class="profile-image" />

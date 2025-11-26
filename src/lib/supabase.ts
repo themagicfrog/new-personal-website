@@ -27,3 +27,34 @@ export interface Photo {
 	date: string;
 	created_at: string;
 }
+
+export interface Adventure {
+	id: string;
+	title: string;
+	one_liner: string;
+	description: string;
+	images: string[] | null;
+	date: string;
+	created_at: string;
+}
+
+export interface Writing {
+	id: string;
+	title: string;
+	one_liner: string;
+	description: string;
+	words: string | null;
+	tag: string | null;
+	link: string | null;
+	date: string;
+	created_at: string;
+}
+
+export interface Art {
+	id: string;
+	title: string;
+	images: string[] | null;
+	caption: string | null;
+	date: string;
+	created_at: string;
+}

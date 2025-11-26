@@ -1,0 +1,188 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import CloudBanner from '../components/CloudBanner.astro';
+import { supabase, type Writing } from '../lib/supabase';
+
+let writings: Writing[] = [];
+
+try {
+	const { data, error } = await supabase
+		.from('writing')
+		.select('*')
+		.order('date', { ascending: false });
+
+	if (error) {
+		console.error('Error fetching writing:', error);
+	} else {
+		writings = (data || []).map((writing: any) => ({
+			...writing,
+			one_liner: writing['one-liner'] || writing.one_liner || ''
+		}));
+	}
+} catch (err) {
+	console.error('Failed to fetch writing:', err);
+}
+---
+
+<PageLayout title="Writing - Estella Gu">
+	<Breadcrumb items={[
+		{ text: 'home', href: '/' },
+		{ text: 'writing' }
+	]} />
+	<CloudBanner />
+	<div class="box-content writing-page">
+		<h1>writing</h1>
+		{writings.length === 0 ? (
+			<p>no writing pieces</p>
+		) : (
+			<div class="writings-list">
+				{writings.map((writing) => (
+					<article class="writing-card">
+						<div class="writing-header">
+							<h2>{writing.title}</h2>
+							{writing.date && (
+								<time class="writing-date">{new Date(writing.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+							)}
+						</div>
+						<p class="writing-one-liner">{writing.one_liner}</p>
+						{(writing.tag || writing.words) && (
+							<div class="writing-meta">
+								{writing.tag && (
+									<span class="writing-tag">{writing.tag}</span>
+								)}
+								{writing.words && (
+									<span class="writing-words">{writing.words} words</span>
+								)}
+							</div>
+						)}
+						<p class="writing-description">{writing.description}</p>
+						{writing.link && (
+							<a href={writing.link} target="_blank" rel="noopener noreferrer" class="writing-link">
+								read more →
+							</a>
+						)}
+					</article>
+				))}
+			</div>
+		)}
+	</div>
+</PageLayout>
+
+<style>
+	.writing-page {
+		flex-direction: column;
+	}
+
+	.writing-page h1 {
+		margin-bottom: 1rem;
+	}
+
+	.writings-list {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 2rem;
+		margin-top: 0.2rem;
+	}
+
+	.writing-card {
+		border: 2px solid var(--text-color);
+		border-radius: 10px;
+		padding: 2.5rem;
+		background-color: #fafafa;
+	}
+
+	.writing-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-bottom: 1rem;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+
+	.writing-card h2 {
+		font-family: 'DynaPuff', sans-serif;
+		font-size: 2rem;
+		margin: 0;
+		color: var(--text-color);
+	}
+
+	.writing-date {
+		font-family: 'Dekko', sans-serif;
+		font-size: 1rem;
+		color: var(--text-color);
+		opacity: 0.7;
+	}
+
+	.writing-one-liner {
+		font-family: 'Dekko', sans-serif;
+		font-size: 1.3rem;
+		font-weight: 600;
+		margin: 0.5rem 0 1rem 0;
+		color: var(--text-color);
+	}
+
+	.writing-meta {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+		margin-bottom: 1rem;
+	}
+
+	.writing-tag {
+		font-family: 'Dekko', sans-serif;
+		font-size: 0.9rem;
+		color: var(--text-color);
+		opacity: 0.8;
+		font-style: italic;
+	}
+
+	.writing-words {
+		font-family: 'Dekko', sans-serif;
+		font-size: 0.9rem;
+		color: var(--text-color);
+		opacity: 0.7;
+	}
+
+	.writing-description {
+		font-family: 'Dekko', sans-serif;
+		font-size: 1.1rem;
+		line-height: 1.6;
+		margin: 1rem 0;
+		color: var(--text-color);
+	}
+
+	.writing-link {
+		display: inline-block;
+		font-family: 'Dekko', sans-serif;
+		font-size: 1.2rem;
+		color: var(--text-color);
+		text-decoration: none;
+		margin-top: 1rem;
+		transition: opacity 0.2s;
+	}
+
+	.writing-link:hover {
+		opacity: 0.7;
+	}
+
+	@media (max-width: 768px) {
+		.writings-list {
+			grid-template-columns: 1fr;
+		}
+
+		.writing-card {
+			padding: 1.5rem;
+		}
+
+		.writing-card h2 {
+			font-size: 1.4rem;
+		}
+
+		.writing-one-liner {
+			font-size: 1rem;
+		}
+	}
+</style>
+
